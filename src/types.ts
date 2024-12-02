@@ -1,3 +1,5 @@
+import type { Dayjs } from "dayjs";
+
 export interface NasaImage {
   href: string;
   title: string;
@@ -33,4 +35,10 @@ export interface NasaSearchResponse {
       total_hits: number;
     };
   };
+}
+
+export interface FormProps {
+  query: string;
+  yearStart: Dayjs;
+  yearEnd: Dayjs;
 }

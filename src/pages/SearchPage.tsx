@@ -29,8 +29,8 @@ export const SearchPage: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <Content className="p-4 md:p-8">
+    <Layout className="h-screen w-full min-h-screen overflow-y-auto">
+      <Content>
         <Title level={2}>NASA Media Library Search</Title>
         <SearchForm onSearch={handleSearch} loading={loading} />
         <SearchResults results={results} loading={loading} />

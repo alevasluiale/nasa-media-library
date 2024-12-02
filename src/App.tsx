@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SearchPage } from "./pages/SearchPage";
 import { ShowPage } from "./pages/ShowPage";
+import "./App.css";
 
 const App: React.FC = () => {
   return (
