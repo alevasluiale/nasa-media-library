@@ -34,7 +34,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
         >
           <Form.Item
             name="query"
-            label="Search Query"
+            label="Search by"
             rules={[{ required: true, message: "Please enter a search query" }]}
             className="mb-6"
           >
@@ -52,7 +52,11 @@ export const SearchForm: React.FC<SearchFormProps> = ({
               () => ({
                 validator(_, value: Dayjs) {
                   const startYear = form.getFieldValue("yearStart") as Dayjs;
-                  if (!value || !startYear || value.year() > startYear.year()) {
+                  if (
+                    !value ||
+                    !startYear ||
+                    value.year() >= startYear.year()
+                  ) {
                     return Promise.resolve();
                   }
                   return Promise.reject(

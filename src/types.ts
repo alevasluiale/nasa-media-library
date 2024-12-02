@@ -20,6 +20,7 @@ export interface NasaCollection {
     keywords?: string[];
     date_created: string;
     media_type: string;
+    nasa_id: string;
   }>;
   links: Array<{
     href: string;

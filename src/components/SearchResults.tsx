@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from "react";
 import { Card, List, Space, Spin } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NasaCollection } from "../types";
 
 interface SearchResultsProps {
@@ -15,6 +15,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   hasMore,
   onLoadMore,
 }) => {
+  const navigate = useNavigate();
   const observer = useRef<IntersectionObserver>();
   const loadingRef = useRef<HTMLDivElement>(null);
 
@@ -45,6 +46,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     },
     [loading, hasMore, onLoadMore],
   );
+
+  const handleItemClick = (item: NasaCollection) => {
+    navigate(`/show/${encodeURIComponent(item.data[0].nasa_id)}`, {
+      state: { collection: item },
+    });
+  };
+
   return (
     <>
       <List
@@ -61,7 +69,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
           return (
             <List.Item ref={isLastElement ? lastElementRef : undefined}>
-              <Link to={`/show/${encodeURIComponent(item.href)}`}>
+              <div onClick={() => handleItemClick(item)}>
                 <Card
                   hoverable
                   cover={
@@ -88,7 +96,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                     }
                   />
                 </Card>
-              </Link>
+              </div>
             </List.Item>
           );
         }}
