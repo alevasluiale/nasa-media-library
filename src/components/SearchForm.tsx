@@ -1,11 +1,11 @@
 import React from "react";
-import { Form, Input, DatePicker, Button, Space } from "antd";
+import { Form, Input, DatePicker, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { FormProps } from "../types.ts";
+import { FormProps, Query } from "../types.ts";
 import { Dayjs } from "dayjs";
 
 interface SearchFormProps {
-  onSearch: (query: string, yearStart?: string, yearEnd?: string) => void;
+  onSearch: (query: Query) => void;
   loading: boolean;
 }
 
@@ -16,15 +16,15 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   const [form] = Form.useForm<FormProps>();
 
   const handleSubmit = (values: FormProps) => {
-    onSearch(
-      values.query,
-      values.yearStart?.year().toString(),
-      values.yearEnd?.year().toString(),
-    );
+    onSearch({
+      search: values.query,
+      yearStart: values.yearStart?.year().toString(),
+      yearEnd: values.yearEnd?.year().toString(),
+    });
   };
 
   return (
-    <div className="w-full bg-gray-50 flex items-start justify-center pt-12">
+    <div className="w-full bg-gray-50 flex items-start justify-center">
       <div className="w-full max-w-xl px-4 md:px-6">
         <Form
           form={form}
@@ -71,6 +71,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
               htmlType="submit"
               icon={<SearchOutlined />}
               className="w-32"
+              disabled={loading}
             >
               Search
             </Button>

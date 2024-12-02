@@ -39,6 +39,12 @@ export interface NasaSearchResponse {
 
 export interface FormProps {
   query: string;
-  yearStart: Dayjs;
-  yearEnd: Dayjs;
+  yearStart?: Dayjs;
+  yearEnd?: Dayjs;
+}
+
+export interface Query {
+  search: string;
+  yearStart?: string;
+  yearEnd?: string;
 }

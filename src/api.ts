@@ -1,19 +1,19 @@
-import { NasaCollection, NasaSearchResponse } from "./types.ts";
+import { NasaCollection, NasaSearchResponse, Query } from "./types.ts";
 
 const NASA_API_BASE = "https://images-api.nasa.gov";
 
 export const searchNasaImages = async (
-  query: string,
-  yearStart?: string,
-  yearEnd?: string,
+  query: Query,
+  page: number = 1,
 ): Promise<NasaSearchResponse> => {
   const params = new URLSearchParams({
-    q: query,
+    q: query.search,
     media_type: "image",
+    page: page.toString(),
   });
 
-  if (yearStart) params.append("year_start", yearStart);
-  if (yearEnd) params.append("year_end", yearEnd);
+  if (query.yearStart) params.append("year_start", query.yearStart);
+  if (query.yearEnd) params.append("year_end", query.yearEnd);
 
   const response = await fetch(`${NASA_API_BASE}/search?${params}`);
   if (!response.ok) throw new Error("Failed to fetch NASA images");
