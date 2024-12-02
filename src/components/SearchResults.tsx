@@ -34,7 +34,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
         },
         {
           root: null,
-          rootMargin: "100px",
+          rootMargin: "1000px",
           threshold: 0.1,
         },
       );
@@ -48,10 +48,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <>
       <List
-        className="flex px-4 overflow-y-auto"
+        className="px-4 overflow-y-auto"
         grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 4 }}
         dataSource={results}
-        loading={loading}
         renderItem={(item, index) => {
           const data = item.data[0];
           const thumbnail = item.links?.find(

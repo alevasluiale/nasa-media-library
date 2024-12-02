@@ -52,18 +52,20 @@ export const SearchPage: React.FC = () => {
   }, [currentPage, currentQuery, loading, hasMore]);
 
   return (
-    <Layout className="h-screen w-full min-h-screen">
-      <Content>
-        <Title className="mt-4" level={2}>
-          NASA Media Library Search
-        </Title>
-        <SearchForm onSearch={handleSearch} loading={loading} />
-        <SearchResults
-          results={results}
-          loading={loading}
-          hasMore={hasMore}
-          onLoadMore={loadMore}
-        />
+    <Layout className="h-screen">
+      <Content className="flex flex-col h-full">
+        <div className="flex-none p-4">
+          <Title level={2}>NASA Media Library Search</Title>
+          <SearchForm onSearch={handleSearch} loading={loading} />
+        </div>
+        <div className="flex-1 mb-2 overflow-auto">
+          <SearchResults
+            results={results}
+            loading={loading}
+            hasMore={hasMore}
+            onLoadMore={loadMore}
+          />
+        </div>
       </Content>
     </Layout>
   );

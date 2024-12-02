@@ -25,12 +25,12 @@ export const SearchForm: React.FC<SearchFormProps> = ({
 
   return (
     <div className="w-full bg-gray-50 flex items-start justify-center">
-      <div className="w-full max-w-xl px-4 md:px-6">
+      <div className="w-full max-w-xl px-4 md:px-6 my-4">
         <Form
           form={form}
           onFinish={handleSubmit}
           layout="horizontal"
-          className="w-full bg-red p-6 rounded-lg shadow-sm"
+          className="w-full bg-red p-6 rounded-lg shadow-md"
         >
           <Form.Item
             name="query"
