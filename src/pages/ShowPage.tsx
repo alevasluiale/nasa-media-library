@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Layout,
@@ -17,7 +17,7 @@ import { NasaCollection } from "../types";
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
-export const ShowPage: React.FC = () => {
+function ShowPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [collection, setCollection] = useState<NasaCollection | null>(null);
@@ -151,4 +151,6 @@ export const ShowPage: React.FC = () => {
       </Content>
     </Layout>
   );
-};
+}
+
+export default ShowPage;

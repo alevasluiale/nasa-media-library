@@ -55,9 +55,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   };
 
   return (
-    <>
+    <div className="overflow-y-auto">
       <List
-        className="px-4 overflow-y-auto"
+        className="px-4"
         grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 4 }}
         dataSource={results}
         renderItem={(item, index) => {
@@ -101,6 +101,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       <div ref={loadingRef} className="w-full flex justify-center p-4">
         {loading && <Spin />}
       </div>
-    </>
+    </div>
   );
 };

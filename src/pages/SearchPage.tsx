@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Layout, Typography } from "antd";
 import { SearchForm } from "../components/SearchForm";
 import { SearchResults } from "../components/SearchResults";
@@ -8,7 +8,7 @@ import { NasaCollection, Query } from "../types";
 const { Content } = Layout;
 const { Title } = Typography;
 
-export const SearchPage: React.FC = () => {
+function SearchPage() {
   const resultsRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,4 +74,6 @@ export const SearchPage: React.FC = () => {
       </Content>
     </Layout>
   );
-};
+}
+
+export default SearchPage;
