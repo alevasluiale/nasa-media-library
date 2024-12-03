@@ -1,7 +1,8 @@
 import React, { useCallback, useRef } from "react";
 import { Card, List, Space, Spin } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { NasaCollection } from "../types";
+import ImageWithLoader from "./ImageWithLoader.tsx";
 
 interface SearchResultsProps {
   results: NasaCollection[];
@@ -74,11 +75,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                   hoverable
                   cover={
                     thumbnail && (
-                      <img
-                        alt={data.title}
-                        src={thumbnail}
-                        style={{ height: 200, objectFit: "cover" }}
-                      />
+                      <ImageWithLoader alt={data.title} src={thumbnail} />
                     )
                   }
                 >
