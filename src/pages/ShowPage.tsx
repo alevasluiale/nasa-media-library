@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   Layout,
   Typography,
@@ -20,32 +20,32 @@ const { Title, Paragraph } = Typography;
 function ShowPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [collection, setCollection] = useState<NasaCollection | null>(null);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const [collection, setCollection] = useState<NasaCollection | null>(
+    location.state?.collection || null,
+  );
+  const [loading, setLoading] = useState(!location.state?.collection);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) {
-      setError("No ID provided");
-      setLoading(false);
-      return;
+    // Only fetch if we don't have the collection in state
+    if (!collection && id) {
+      const fetchCollection = async () => {
+        try {
+          const data = await getNasaCollection(id);
+          setCollection(data);
+          setError(null);
+        } catch (error) {
+          console.error("Failed to fetch collection:", error);
+          setError("Failed to load the collection. Please try again later.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchCollection();
     }
-
-    const fetchCollection = async () => {
-      try {
-        const data = await getNasaCollection(id);
-        setCollection(data);
-        setError(null);
-      } catch (error) {
-        console.error("Failed to fetch collection:", error);
-        setError("Failed to load the collection. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCollection();
-  }, [id]);
+  }, [id, collection]);
 
   if (loading) {
     return (
@@ -80,7 +80,7 @@ function ShowPage() {
 
   const metadata = collection.data[0];
 
-  // Get unique images by filtering duplicates based on href
+  // Get unique images
   const images =
     collection.links
       ?.filter((link) => link.rel === "preview")
@@ -88,11 +88,15 @@ function ShowPage() {
         (link, index, self) =>
           index === self.findIndex((t) => t.href === link.href),
       ) || [];
-
   return (
-    <Layout>
-      <Content className="p-4 md:p-8">
-        <Space direction="vertical" size="large" className="w-full">
+    <Layout className="overflow-y-auto">
+      <Content className="h-screen p-4 md:p-8">
+        <Space
+          direction="vertical"
+          size="large"
+          className="w-full"
+          align="center"
+        >
           <Button
             type="primary"
             icon={<LeftOutlined />}
@@ -100,12 +104,10 @@ function ShowPage() {
           >
             Back to Search
           </Button>
-
           <Title level={2}>{metadata.title}</Title>
-
           <Descriptions
             bordered
-            column={{ xxl: 3, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}
+            column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
           >
             {metadata.location && (
               <Descriptions.Item label="Location" span={2}>
@@ -122,31 +124,32 @@ function ShowPage() {
             </Descriptions.Item>
           </Descriptions>
 
+          {/*tailwind classname seems to break it*/}
           {metadata.description && (
-            <Paragraph>{metadata.description}</Paragraph>
+            <Paragraph style={{ maxWidth: "500px" }}>
+              {metadata.description}
+            </Paragraph>
           )}
-
-          {metadata.keywords && metadata.keywords.length > 0 && (
-            <Space wrap>
-              {metadata.keywords.map((keyword) => (
-                <Tag key={keyword}>{keyword}</Tag>
-              ))}
-            </Space>
-          )}
-
           <Image.PreviewGroup>
             <Space wrap size="large">
               {images.map((image, index) => (
                 <Image
                   key={index}
-                  src={image.href}
+                  src={image.href.replace("~thumb", "~orig")}
                   alt={`${metadata.title} - ${index + 1}`}
-                  width={300}
                   placeholder={<Spin />}
+                  className="max-h-96"
                 />
               ))}
             </Space>
           </Image.PreviewGroup>
+          {metadata.keywords && metadata.keywords.length > 0 && (
+            <Space wrap className="justify-center mb-4">
+              {metadata.keywords.map((keyword) => (
+                <Tag key={keyword}>{keyword}</Tag>
+              ))}
+            </Space>
+          )}
         </Space>
       </Content>
     </Layout>
